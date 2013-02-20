@@ -3,11 +3,11 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , http = require('http')
-  , path = require('path');
+var express = require('express');
+var http = require('http');
+var path = require('path');
 
+// the ExpressJS App
 var app = express();
 
 app.configure(function(){
@@ -15,9 +15,6 @@ app.configure(function(){
   // server port number
   app.set('port', process.env.PORT || 3000);
 
-  // database
-  // app.db = mongoose.connect(process.env.MONGOLAB_URI);
-  
   //  templates directory
   app.set('views', __dirname + '/views');
 
@@ -32,6 +29,10 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+
+  // database
+  // app.db = mongoose.connect(process.env.MONGOLAB_URI);
+  
 });
 
 app.configure('development', function(){
@@ -47,8 +48,13 @@ COOKIEHASH in your .env file (also share with heroku) */
 //   })
 // );
 
+// ROUTES
+var routes = require('./routes/index.js');
 app.get('/', routes.index);
 
+
+
+// create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
