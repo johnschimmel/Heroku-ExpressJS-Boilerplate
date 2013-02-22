@@ -119,3 +119,52 @@ app.js
 
 	...
 
+#### Rendering templates w/ data
+
+We define our incoming routes in app.js like mentioned above.
+
+app.js
+
+	var routes = require('../routes/index.js');
+	app.get('/page1', routes.index);
+
+/routes/index.js
+
+	exports.index = function(req, res) {
+
+		var templateData = {
+			'title' : 'Hello World',
+			'content' : 'A Priest and a Rabbi walk into a bar...',
+			'tags' : ['bar','old','not funny']
+
+		}
+
+		res.render('joke.html', templateData);
+	}
+
+/views/joke.html
+
+	<h1>{{title}}</h1>
+	<hr>
+	<p>
+		{{content}}
+	</p>
+	<br>
+	Tagged:
+	{{#tags}}
+	<li>{{.}}</li>
+	{{/tags}}
+
+/view/layout.html
+
+Layouts allow you to have a standard header and footer for a set of pages. It is automatically enabled for this demo code to use /views/layout.html.
+
+	<html>
+		<head>
+		<!-- meta and css stuff here -->
+		</head>
+		<body>
+			{{{ yield }}}
+		</body>
+	</html>
+
