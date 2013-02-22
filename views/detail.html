@@ -18,6 +18,8 @@
 
 		<div>
 			Born: {{astro.birthdate}}<br>
+
+			Skills: {{astro.skills}}<br>
 			
 			Missions:
 			<ul>
@@ -27,7 +29,7 @@
 				{{^astro.missions}}
 				No missions yet.
 				{{/astro.missions}}
-			<ul>
+			</ul>
 		</div>
 
 		{{#astro.walkedOnMoon}}
@@ -50,7 +52,7 @@
 		{{/astros}}
 
 		<br>
-		<a href="/astronauts">Back to listing</a>
+		<a href="/create">Add new astronaut</a>
 	</div>
 
 </div>

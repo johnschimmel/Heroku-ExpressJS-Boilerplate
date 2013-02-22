@@ -5,6 +5,9 @@
  * Routes contains the functions (callbacks) associated with request urls.
  */
 
+/*
+	GET /
+*/
 
 exports.index = function(req, res){
 	console.log("index page requested");
@@ -14,6 +17,9 @@ exports.index = function(req, res){
   	res.render('index', templateData);
 };
 
+/*
+	GET /astronauts/:astro_id
+*/
 exports.listing = function(req, res) {
 	
 	console.log("listings page requested");
@@ -26,6 +32,9 @@ exports.listing = function(req, res) {
 	res.render('listing.html', templateData);
 }
 
+/*
+	GET /astronauts/:astro_id
+*/
 exports.detail = function(req, res) {
 
 	console.log("detail page requested for " + req.params.astro_id);
@@ -47,6 +56,9 @@ exports.detail = function(req, res) {
 	res.render('detail.html', templateData);
 }
 
+/*
+	GET /create
+*/
 exports.astroForm = function(req, res){
 
 	var templateData = {
@@ -56,16 +68,22 @@ exports.astroForm = function(req, res){
 	res.render('create_form.html', templateData);
 }
 
+/*
+	POST /create
+*/
 exports.createAstro = function(req, res) {
 
 	// accept form post data
 	var newAstro = {
 		name : req.body.name,
 		birthdate : req.body.birthdate,
+		skills : req.body.skills,
 		photo : req.body.photoUrl,
 		slug : req.body.name.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_')
 	}
 
+	// push newAstro object into the 'astronauts' array.
+	// this new astronaut will remain for as long as you 
 	astronauts.push(newAstro)
 
 
@@ -86,6 +104,7 @@ astronauts.push({
 		name : 'Wikipedia',
 		url : 'http://en.wikipedia.org/wiki/John_Glenn'
 	},
+	skills : 'Test pilot',
 	walkedOnMoon : false
 });
 
@@ -100,6 +119,7 @@ astronauts.push({
 		name : 'Wikipedia',
 		url : 'http://en.wikipedia.org/wiki/John_Young_(astronaut)'
 	},
+	skills : 'Test pilot',
 	walkedOnMoon : true
 });
 
@@ -113,6 +133,7 @@ astronauts.push({
 		name : 'Wikipedia',
 		url : 'http://en.wikipedia.org/wiki/Sunita_Williams'
 	},
+	skills : 'Test pilot',
 	walkedOnMoon : false
 });
 
