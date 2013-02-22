@@ -10,12 +10,14 @@ var path = require('path');
 // the ExpressJS App
 var app = express();
 
+// configuration of port, templates (/views), static files (/public)
+// and other expressjs settings for the web server.
 app.configure(function(){
 
   // server port number
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 5000);
 
-  //  templates directory
+  //  templates directory to 'views'
   app.set('views', __dirname + '/views');
 
   // setup template engine - we're using Hogan-Express
@@ -51,7 +53,6 @@ COOKIEHASH in your .env file (also share with heroku) */
 // ROUTES
 var routes = require('./routes/index.js');
 app.get('/', routes.index);
-
 
 
 // create NodeJS HTTP server using 'app'

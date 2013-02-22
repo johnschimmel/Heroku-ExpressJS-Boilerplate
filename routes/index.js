@@ -1,6 +1,8 @@
 
 /*
- * GET home page.
+ * routes/index.js
+ * 
+ * Routes contains the functions (callbacks) associated with request urls.
  */
 
 exports.index = function(req, res){
