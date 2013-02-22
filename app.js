@@ -32,7 +32,7 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 
-  // database
+  // database - skipping until week 5
   // app.db = mongoose.connect(process.env.MONGOLAB_URI);
   
 });
@@ -41,8 +41,11 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-/* SESSIONS w/ MongoDB (store sessions across multiple dynos)
-COOKIEHASH in your .env file (also share with heroku) */
+/* 
+SKIPPING FOR FUTURE CLASSES
+SESSIONS w/ MongoDB (store sessions across multiple dynos)
+COOKIEHASH in your .env file (also share with heroku) 
+*/
 // app.use(express.cookieParser(process.env.COOKIEHASH));
 // app.use(express.session({ 
 //     store: new mongoStore({url:process.env.MONGOLAB_URI, maxAge: 300000})
@@ -59,6 +62,7 @@ app.get('/astronauts/:astro_id', routes.detail);
 //new astronaut routes
 app.get('/create',routes.astroForm); //display form
 app.post('/create',routes.createAstro); //form POST submits here
+
 
 // create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){

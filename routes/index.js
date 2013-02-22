@@ -86,12 +86,14 @@ exports.createAstro = function(req, res) {
 	// this new astronaut will remain for as long as you 
 	astronauts.push(newAstro)
 
-
-	res.redirect('/astronauts/'+newAstro.slug)
+	// redirect to the astronaut's page
+	res.redirect('/astronauts/'+ newAstro.slug)
 
 }
 
-
+/*
+	Astronaut Data
+*/ 
 
 var astronauts = [];
 astronauts.push({
