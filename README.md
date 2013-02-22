@@ -128,7 +128,7 @@ app.js
 	var routes = require('../routes/index.js');
 	app.get('/page1', routes.index);
 
-/routes/index.js
+/routes/index.js (example,not the same as actual code in routes/index.js)
 
 	exports.index = function(req, res) {
 
