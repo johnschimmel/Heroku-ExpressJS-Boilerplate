@@ -53,7 +53,8 @@ COOKIEHASH in your .env file (also share with heroku) */
 // ROUTES
 var routes = require('./routes/index.js');
 app.get('/', routes.index);
-
+app.get('/astronauts', routes.listing);
+app.get('/astronauts/:astro_id', routes.detail);
 
 // create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){
