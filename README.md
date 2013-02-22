@@ -7,11 +7,11 @@ Boilerplate for ExpressJS
 * MongoDB (coming soon)
 
 
-### Getting started local development
+### Getting started w/ local development server
 
 Download and install Heroku Toolbelt <https://toolbelt.heroku.com>, this will give you Foreman and the Heroku CLI (command line interface).
 
-1) Download boilerplate and navigate into the directory with Terminal.
+1) Download this boilerplate repo and navigate into the code directory with Terminal.
 
 2) Run **npm install** to get all required libraries.
 
@@ -27,7 +27,7 @@ Download and install Heroku Toolbelt <https://toolbelt.heroku.com>, this will gi
 
 ### Auto restart development server
 
-To auto restart your development server after you make some changes to your code. Install **Nodemon**. Nodemon will watch your files and restart the server for you.
+To auto restart your development server after you make some changes to your code. Install **Nodemon**. [Nodemon](https://github.com/remy/nodemon) will watch your files and restart the server for you.
 
 Install Nodemon. In Terminal type,
 
@@ -40,3 +40,6 @@ There are two possible ways to use Nodemon,
 Or with the helper script
 
 	. devserver
+
+The **.nodemonignore** file will ignore certain files and directories from being watched. By default and for example we're ignoring /public folder.
+

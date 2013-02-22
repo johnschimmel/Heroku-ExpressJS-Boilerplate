@@ -72,6 +72,9 @@ exports.astroForm = function(req, res){
 	POST /create
 */
 exports.createAstro = function(req, res) {
+	
+	console.log("received form submission");
+	console.log(req.body);
 
 	// accept form post data
 	var newAstro = {
