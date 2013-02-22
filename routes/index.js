@@ -9,27 +9,20 @@
 	GET /
 */
 
-exports.index = function(req, res){
-	console.log("index page requested");
-
-	var templateData = { pageTitle: 'Introduction to Templates' };
-
-  	res.render('index', templateData);
-};
 
 /*
-	GET /astronauts/:astro_id
+	GET /
 */
-exports.listing = function(req, res) {
+exports.index = function(req, res) {
 	
 	console.log("listings page requested");
 
 	var templateData = {
 		astros : astronauts,
-		pageTitle : astronauts.length + " NASA Astronauts"
+		pageTitle : "NASA Astronauts (" + astronauts.length + ")"
 	}
 
-	res.render('listing.html', templateData);
+	res.render('index.html', templateData);
 }
 
 /*

@@ -1,1 +1,25 @@
-<h1>{{title}}</h1>
+<div class="row">
+
+	<div class="span8">
+
+		<h1>ExpressJS + Templates Demo</h1>
+		<h3>{{pageTitle}}</h3>
+
+		<hr>
+
+		{{#astros}}
+		<div class="row">
+			<div class="span4">
+				<a href="/astronauts/{{slug}}">{{name}}</a>
+			</div>
+		</div>
+		{{/astros}}
+
+		<hr>
+
+		<p>
+			<a href="/create">Create a new astronaut</a>
+		</p>
+	</div>
+
+</div>
