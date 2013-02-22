@@ -15,7 +15,7 @@
 */
 exports.index = function(req, res) {
 	
-	console.log("listings page requested");
+	console.log("main page requested");
 
 	var templateData = {
 		astros : astronauts,
@@ -34,6 +34,8 @@ exports.detail = function(req, res) {
 
 	//get the requested astronaut by the param on the url :astro_id
 	var astro_id = req.params.astro_id;
+
+	// make a 'fake' query to function getAstronautById
 	var currentAstronaut = getAstronautById(astro_id);
 
 	if (!currentAstronaut) {
@@ -78,6 +80,9 @@ exports.createAstro = function(req, res) {
 		slug : req.body.name.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_')
 	}
 
+	console.log("we made an astronaut");
+	console.log(newAstro);
+
 	// push newAstro object into the 'astronauts' array.
 	// this new astronaut will remain for as long as you 
 	astronauts.push(newAstro)
@@ -107,7 +112,7 @@ astronauts.push({
 });
 
 astronauts.push({
-	slug : 'john_young',
+	slug : 'john_watt_young',
 	name : 'John Young',
 	birthdate : 'September 24, 1930',
 	missions : ['Gemini 3','Gemini 10','Apollo 10', 'Apollo 16','STS-1','STS-9'

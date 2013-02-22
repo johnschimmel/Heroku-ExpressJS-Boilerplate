@@ -54,8 +54,11 @@ COOKIEHASH in your .env file (also share with heroku)
 // );
 
 // ROUTES
+
 var routes = require('./routes/index.js');
+
 app.get('/', routes.index);
+
 app.get('/astronauts/:astro_id', routes.detail);
 
 //new astronaut routes
@@ -67,3 +70,16 @@ app.post('/create',routes.createAstro); //form POST submits here
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
