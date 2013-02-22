@@ -157,7 +157,7 @@ app.js
 
 /view/layout.html
 
-Layouts allow you to have a standard header and footer for a set of pages. It is automatically enabled for this demo code to use /views/layout.html.
+Layouts allow you to have a standard header and footer for a set of pages. It is automatically enabled for this demo code to use /views/layout.html.P
 
 	<html>
 		<head>
