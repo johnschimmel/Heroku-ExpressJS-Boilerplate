@@ -56,6 +56,10 @@ app.get('/', routes.index);
 app.get('/astronauts', routes.listing);
 app.get('/astronauts/:astro_id', routes.detail);
 
+//new astronaut routes
+app.get('/create',routes.astroForm); //display form
+app.post('/create',routes.createAstro); //form POST submits here
+
 // create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

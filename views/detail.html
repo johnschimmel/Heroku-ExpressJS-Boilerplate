@@ -1,6 +1,6 @@
 <div class="row">
-
-	<!-- first column -->
+	
+	<!-- first column w/ image-->
 	<div class="span4">
 		<img src="{{astro.photo}}" alt="photo of astronaut {{astro.name}}" class="img-polaroid" width="320px"><br>
 		
@@ -11,31 +11,35 @@
 
 	</div>
 	
-	<!-- second column -->
+	<!-- second column w/ details-->
 	<div class="span4">
 		<h2>{{astro.name}}</h2>
-
 		<hr>
 
-		Born: {{astro.birthdate}}<br>
-		
-		Missions: 
-		<ul>
-			{{#astro.missions}}
-			<li>{{.}}</li>
-			{{/astro.missions}}
-		<ul>
+		<div>
+			Born: {{astro.birthdate}}<br>
+			
+			Missions:
+			<ul>
+				{{#astro.missions}}
+				<li>{{.}}</li>
+				{{/astro.missions}}
+				{{^astro.missions}}
+				No missions yet.
+				{{/astro.missions}}
+			<ul>
+		</div>
 
-		{{#walkedOnMoon}}
+		{{#astro.walkedOnMoon}}
 		<div>
 			<h3>WALKED ON THE MOON!</h3>
 			<img src="http://gifs.gifbin.com/062009/1246007745_michael_moonwalking.gif" alt="moonwalking animated gif with michael jackson">
 		</div>
-		{{/walkedOnMoon}}
+		{{/astro.walkedOnMoon}}
 
 	</div>
 
-	<!-- third column -->
+	<!-- third column w/ listings -->
 	<div class="span2">
 		<h3>Astronauts</h3>
 		<hr>

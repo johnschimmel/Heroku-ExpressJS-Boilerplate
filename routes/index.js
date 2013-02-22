@@ -9,7 +9,7 @@
 exports.index = function(req, res){
 	console.log("index page requested");
 
-	templateData = { pageTitle: 'Introduction to Templates' };
+	var templateData = { pageTitle: 'Introduction to Templates' };
 
   	res.render('index', templateData);
 };
@@ -18,7 +18,7 @@ exports.listing = function(req, res) {
 	
 	console.log("listings page requested");
 
-	templateData = {
+	var templateData = {
 		astros : astronauts,
 		pageTitle : astronauts.length + " NASA Astronauts"
 	}
@@ -34,7 +34,11 @@ exports.detail = function(req, res) {
 	var astro_id = req.params.astro_id;
 	var currentAstronaut = getAstronautById(astro_id);
 
-	templateData = {
+	if (!currentAstronaut) {
+		res.status(404).render('404.html');
+	}
+
+	var templateData = {
 		astro : currentAstronaut,
 		astros : astronauts,
 		pageTitle : currentAstronaut.name
@@ -43,11 +47,29 @@ exports.detail = function(req, res) {
 	res.render('detail.html', templateData);
 }
 
-exports.astroform = function(req, res){
+exports.astroForm = function(req, res){
 
-	templateData = {
+	var templateData = {
+		page_title : 'Enlist a new astronaut'
+	};
 
+	res.render('create_form.html', templateData);
+}
+
+exports.createAstro = function(req, res) {
+
+	// accept form post data
+	var newAstro = {
+		name : req.body.name,
+		birthdate : req.body.birthdate,
+		photo : req.body.photoUrl,
+		slug : req.body.name.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'_')
 	}
+
+	astronauts.push(newAstro)
+
+
+	res.redirect('/astronauts/'+newAstro.slug)
 
 }
 
