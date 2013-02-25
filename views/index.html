@@ -10,12 +10,11 @@
 
 		<h3>{{pageTitle}}</h3>
 
+		<!-- astronaut loop -->
 		{{#astros}}
-		<div class="row">
-			<div class="span4">
-				<a href="/astronauts/{{slug}}">{{name}}</a>
-			</div>
-		</div>
+		
+		<li><a href="/astronauts/{{slug}}">{{name}}</a> - {{source.name}}</li>
+		
 		{{/astros}}
 
 		<hr>
@@ -23,6 +22,11 @@
 			<a href="/create">Create a new astronaut</a>
 		</p>
 	</div>
+
+
+
+
+
 
 	<!-- right column -->
 	<div class="span6">
