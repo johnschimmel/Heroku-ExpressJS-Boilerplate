@@ -17,13 +17,36 @@ Download and install Heroku Toolbelt <https://toolbelt.heroku.com>, this will gi
 
 	npm install
 
-3) Start server with **foreman start**.
+3) A Git repository and Heroku app are required for this Example to work. 
+
+	git init
+	git add .
+	git commit -am "init commit"
+
+
+4) Create Heroku app and add database
+
+	heroku create
+
+5) Add MongoLabs Starter MongoDB add on to your heroku app
+
+	heroku addons:add mongolab:starter
+
+6) Get Heroku MongoLab connection string into .env file
+
+	heroku config --shell | grep MONGOLAB_URI >> .env
+
+Your connection string to MongoDB will be in your **.env** file now.
+
+7) Start server with **foreman start**.
 
 	foreman start
 
-4) Open web browser to <http://localhost:5000> to view the web app.
+Foreman reads your .env file, populates the process.env object for use in your app.
 
-5) Stop the web server press Command+C in the Terminal window.
+8) Open web browser to <http://localhost:5000> to view the web app.
+
+9) Stop the web server press Command+C in the Terminal window.
 
 ### Auto restart development server
 
