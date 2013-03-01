@@ -13,6 +13,7 @@ var AstronautSchema = new Schema({
 	},
 	skills : [String],
 	walkedOnMoon : Boolean,
+	
     lastupdated : { type: Date, default: Date.now }
 });
 

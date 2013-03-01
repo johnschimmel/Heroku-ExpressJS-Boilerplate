@@ -66,6 +66,8 @@ app.get('/astronauts/:astro_id', routes.detail);
 app.get('/create',routes.astroForm); //display form
 app.post('/create',routes.createAstro); //form POST submits here
 
+app.get('/loadastros', routes.loadData); // load in astronauts array into db
+
 
 // create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){
