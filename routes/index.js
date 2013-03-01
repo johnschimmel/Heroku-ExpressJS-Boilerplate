@@ -5,10 +5,7 @@
  * Routes contains the functions (callbacks) associated with request urls.
  */
 
-/*
-	GET /
-*/
-
+var astronaut = require("../models/astronaut.js");
 
 /*
 	GET /
