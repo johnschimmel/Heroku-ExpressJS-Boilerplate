@@ -17,7 +17,8 @@
 		<hr>
 
 		<div>
-			Born:{{astro.formattedBirthdate}}
+			Born:
+			{{#formatDate}}{{astro.birthdate}}{{/formatDate}}
 			<br>
 
 			Skills: {{astro.skills}}<br>
@@ -44,6 +45,50 @@
 		NEVER GOT TO THE MOON :(
 		{{/astro.walkedOnMoon}}
 
+		<br><br>
+		<a href="/astronauts/{{astro.slug}}/edit" class="btn btn-info">edit</a>
+		
+		<hr>
+		<h3>Ship Logs</h3>
+		{{#astro.shiplogs}}
+			<i>{{date}}</i><br>
+			<p>{{content}}</p>
+			<hr>
+		{{/astro.shiplogs}}
+
+		{{^astro.shiplogs}}No logs{{/astro.shiplogs}}
+
+		<a href="#myModal" role="button" class="btn" data-toggle="modal">Add Log</a>
+
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			    <h3 id="myModalLabel">Modal header</h3>
+		  	</div>
+		  	<div class="modal-body">
+				<form method="POST" action="/astronauts/{{astro.slug}}/addshiplog" id="shiplogform">
+					<legend>Add Ship's Log</legend>
+					<div>
+						<label for="logcontent">Log</label>
+						<textarea id="logcontent" name="logcontent"></textarea>
+					</div>
+
+					<div>
+						<label for="logdate">Date</label>
+						<input type="date" name="logdate" id="logdate" required>
+					</div>
+					
+					<div>
+						<label for="logtime">Time</label>
+						<input type="time" name="logtime" id="logtime" required>
+					</div>
+
+					<input type="submit" value="Add Log" class="btn btn-primary">
+				</form>
+			</div>
+
+		</div>
 	</div>
 
 	<!-- third column w/ listings -->

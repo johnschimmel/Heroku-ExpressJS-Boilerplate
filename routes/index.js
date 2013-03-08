@@ -52,7 +52,8 @@ exports.detail = function(req, res) {
 	var astro_id = req.params.astro_id;
 
 	// query the database for astronaut
-	astronautModel.findOne({slug:astro_id}, function(err, currentAstronaut){
+	var astroQuery = astronautModel.findOne({slug:astro_id});
+	astroQuery.exec(function(err, currentAstronaut){
 
 		if (err) {
 			return res.status(500).send("There was an error on the astronaut query");
@@ -127,7 +128,7 @@ exports.createAstro = function(req, res) {
 	});
 
 	// you can also add properties with the . (dot) notation
-	newAstro.birthdate = moment(req.body.birthdate);
+	newAstro.birthdate = moment(req.body.birthdate).toDate();
 	newAstro.skills = req.body.skills.split(",");
 
 	// walked on moon checkbox
@@ -139,7 +140,7 @@ exports.createAstro = function(req, res) {
 	newAstro.save(function(err){
 		if (err) {
 			console.error("Error on saving new astronaut");
-			console.error("err");
+			console.error(err);
 			return res.send("There was an error when creating a new astronaut");
 
 		} else {
@@ -149,122 +150,139 @@ exports.createAstro = function(req, res) {
 			// redirect to the astronaut's page
 			res.redirect('/astronauts/'+ newAstro.slug)
 		}
-
 	});
+};
 
-	
-	
+exports.editAstroForm = function(req, res) {
+
+	// Get astronaut from URL params
+	var astro_id = req.params.astro_id;
+	var astroQuery = astronautModel.findOne({slug:astro_id});
+	astroQuery.exec(function(err, astronaut){
+
+		if (err) {
+			console.error("ERROR");
+			console.error(err);
+			res.send("There was an error querying for "+ astro_id).status(500);
+		}
+
+		if (astronaut != null) {
+
+			// birthdateForm function for edit form
+			// html input type=date needs YYYY-MM-DD format
+			astronaut.birthdateForm = function() {
+					return moment(this.birthdate).format("YYYY-MM-DD");
+			}
+
+			// prepare template data
+			var templateData = {
+				astro : astronaut
+			};
+
+			// render template
+			res.render('edit_form.html',templateData);
+
+		} else {
+
+			console.log("unable to find astronaut: " + astro_id);
+			return res.status(404).render('404.html');
+		}
+
+	})
 
 }
 
-exports.loadData = function(req, res) {
+exports.updateAstro = function(req, res) {
 
-	// load initial astronauts into the database
-	for(a in astronauts) {
+	// Get astronaut from URL params
+	var astro_id = req.params.astro_id;
 
-		//get loop's current astronuat
-		currAstro = astronauts[a];
-
-		// prepare astronaut for database
-		tmpAstro = new astronautModel();
-		tmpAstro.slug = currAstro.slug;
-		tmpAstro.name = currAstro.name;
-		tmpAstro.missions = currAstro.missions;
-		tmpAstro.photo = currAstro.photo;
-		tmpAstro.source = currAstro.source;
-		tmpAstro.walkedOnMoon = currAstro.walkedOnMoon;
-		
-		// convert currAstro's birthdate string into a native JS date with moment
-		// http://momentjs.com/docs/#/parsing/string/
-		tmpAstro.birthdate = moment(currAstro.birthdate); 
-
-		// convert currAstro's string of skills into an array of strings
-		tmpAstro.skills = currAstro.skills.split(",");
-
-		// save tmpAstro to database
-		tmpAstro.save(function(err){
-			// if an error occurred on save.
-			if (err) {
-				console.error("error on save");
-				console.error(err);
-			} else {
-				console.log("Astronaut loaded/saved in database");
-			}
-		});
-
-	} //end of for-in loop
-
-	// respond to browser
-	return res.send("loaded astronauts");
-
-} // end of loadData function
-
-
-
-/*
-	Astronaut Data
-*/ 
-
-var astronauts = [];
-astronauts.push({
-	slug : 'john_glenn',
-	name : 'John Glenn',
-	birthdate : 'July 18, 1921',
-	missions : ['Mercury-Atlas 6','STS-95'],
-	photo : 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/93/GPN-2000-001027.jpg/394px-GPN-2000-001027.jpg',
-	source : {
-		name : 'Wikipedia',
-		url : 'http://en.wikipedia.org/wiki/John_Glenn'
-	},
-	skills : 'Test pilot',
-	walkedOnMoon : false
-});
-
-astronauts.push({
-	slug : 'john_watt_young',
-	name : 'John Young',
-	birthdate : 'September 24, 1930',
-	missions : ['Gemini 3','Gemini 10','Apollo 10', 'Apollo 16','STS-1','STS-9'
-],
-	photo : 'http://upload.wikimedia.org/wikipedia/commons/e/ef/Astronaut_John_Young_gemini_3.jpg',
-	source : {
-		name : 'Wikipedia',
-		url : 'http://en.wikipedia.org/wiki/John_Young_(astronaut)'
-	},
-	skills : 'Test pilot',
-	walkedOnMoon : true
-});
-
-astronauts.push({
-	slug : 'sunita_williams',
-	name : 'Sunita Williams',
-	birthdate : 'September 19, 1965',
-	missions : ['STS-116', 'STS-117', 'Expedition 14', 'Expedition 15', 'Soyuz TMA-05M', 'Expedition 32'],
-	photo : 'http://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Sunita_Williams.jpg/480px-Sunita_Williams.jpg',
-	source : {
-		name : 'Wikipedia',
-		url : 'http://en.wikipedia.org/wiki/Sunita_Williams'
-	},
-	skills : 'Test pilot',
-	walkedOnMoon : false
-});
-
-
-// Look up an astronaut by id
-// accepts an 'id' parameter
-// loops through all astronauts, checks 'id' property
-// returns found astronaut or returns false is not found
-var getAstronautById = function(slug) {
-	for(a in astronauts) {
-		var currentAstro = astronauts[a];
-
-		// does current astronaut's id match requested id?
-		if (currentAstro.slug == slug) {
-			return currentAstro;
-		}
+	// prepare form data
+	var updatedData = {
+		name : req.body.name,
+		photo : req.body.photoUrl,
+		source : {
+			name : req.body.source_name,
+			url : req.body.source_url
+		},
+		birthdate : moment(req.body.birthdate).toDate(),
+		skills : req.body.skills.split(","),
+		walkedOnMoon : (req.body.walkedonmoon) ? true : false
 	}
 
-	return false;
+	// query for astronaut
+	astronautModel.update({slug:astro_id}, { $set: updatedData}, function(err, astronaut){
+
+		if (err) {
+			console.error("ERROR");
+			console.error(err);
+			res.send("There was an error updating "+ astro_id).status(500);
+		}
+
+		if (astronaut != null) {
+			res.redirect('/astronauts/' + astro_id);
+
+
+		} else {
+
+			// unable to find astronaut, return 404
+			console.error("unable to find astronaut: " + astro_id);
+			return res.status(404).render('404.html');
+		}
+	})
 }
 
+exports.postShipLog = function(req, res) {
 
+	// Get astronaut from URL params
+	var astro_id = req.params.astro_id;
+
+	// query database for astronaut
+	astronautModel.findOne({slug:astro_id}, function(err, astronaut){
+
+		if (err) {
+			console.error("ERROR");
+			console.error(err);
+			res.send("There was an error querying for "+ astro_id).status(500);
+		}
+
+		if (astronaut != null) {
+
+			// found the astronaut
+
+			// concatenate submitted date field + time field
+			var datetimestr = req.body.logdate + " " + req.body.logtime;
+
+			console.log(datetimestr);
+			
+			// add a new shiplog
+			var logData = {
+				date : moment(datetimestr, "YYYY-MM-DD HH:mm").toDate(),
+				content : req.body.logcontent
+			};
+
+			console.log("new ship log");
+			console.log(logData);
+
+			astronaut.shiplogs.push(logData);
+			astronaut.save(function(err){
+				if (err) {
+					console.error(err);
+					res.send(err.message);
+				}
+			});
+
+			res.redirect('/astronauts/' + astro_id);
+
+
+		} else {
+
+			// unable to find astronaut, return 404
+			console.error("unable to find astronaut: " + astro_id);
+			return res.status(404).render('404.html');
+		}
+	})
+
+
+
+}
