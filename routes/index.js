@@ -5,6 +5,8 @@
  * Routes contains the functions (callbacks) associated with request urls.
  */
 
+var _ = require("underscore");
+
 var moment = require("moment"); // date manipulation library
 var astronautModel = require("../models/astronaut.js"); //db model
 
@@ -128,7 +130,10 @@ exports.createAstro = function(req, res) {
 	});
 
 	// you can also add properties with the . (dot) notation
-	newAstro.birthdate = moment(req.body.birthdate).toDate();
+	if (req.body.birthdate) {
+		newAstro.birthdate = moment(req.body.birthdate).toDate();
+	}
+
 	newAstro.skills = req.body.skills.split(",");
 
 	// walked on moon checkbox
@@ -141,7 +146,15 @@ exports.createAstro = function(req, res) {
 		if (err) {
 			console.error("Error on saving new astronaut");
 			console.error(err);
-			return res.send("There was an error when creating a new astronaut");
+
+			var templateData = {
+				page_title : 'Enlist a new astronaut',
+				errors : err.errors,
+				astro : _.extend({},req.body)
+			};
+
+			res.render('create_form.html', templateData);
+			// return res.send("There was an error when creating a new astronaut");
 
 		} else {
 			console.log("Created a new astronaut!");
@@ -207,7 +220,9 @@ exports.updateAstro = function(req, res) {
 		},
 		birthdate : moment(req.body.birthdate).toDate(),
 		skills : req.body.skills.split(","),
+
 		walkedOnMoon : (req.body.walkedonmoon) ? true : false
+		
 	}
 
 	// query for astronaut

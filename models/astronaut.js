@@ -1,6 +1,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+// validation function
+var lengthValidation = function(val) {
+	if (val.length >= 5) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 // ship's log schema
 var shipLogSchema = new Schema({
 	date : Date,
@@ -11,7 +20,7 @@ var shipLogSchema = new Schema({
 // define astronaut schema
 var AstronautSchema = new Schema({
     slug : { type: String, lowercase: true, required: true, unique: true },
-	name : { type: String, required: true},
+	name : { type: String, required: true, validate: [lengthValidation, 'Name must be at least 5 characters.']},
 	birthdate : Date,
 	missions : [String],
 	photo : String,

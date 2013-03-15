@@ -5,7 +5,12 @@
 		<form method="POST" action="/create">
 
 			<label for="thenamebox">
-				Name <input type="text" name="name" id="thenamebox" required> 
+				{{#errors.name}}
+				<span class="help-block alert alert-error">{{type}}</span>
+				{{/errors.name}}
+				
+				Name <input type="text" name="name" id="thenamebox" value="{{astro.name}}" required>
+				
 			</label>
 
 
@@ -14,7 +19,7 @@
 			</label>
 
 			<label for="skills">
-				Skills <input type="text" name="skills" id="skills"> 
+				Skills <input type="text" name="skills" id="skills" value="{{astro.skills}}"> 
 			</label>			
 
 			<label for="photoUrl">
