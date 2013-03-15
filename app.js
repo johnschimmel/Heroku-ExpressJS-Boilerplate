@@ -72,6 +72,9 @@ app.get('/astronauts/:astro_id', routes.detail);
 app.get('/astronauts/:astro_id/edit', routes.editAstroForm); //GET display form
 app.post('/astronauts/:astro_id/edit', routes.updateAstro); //POST update database
 
+// delete astronaut
+app.get('/astronauts/:astro_id/delete', routes.deleteAstro);
+
 // add ship's log
 app.post('/astronauts/:astro_id/addshiplog', routes.postShipLog);
 

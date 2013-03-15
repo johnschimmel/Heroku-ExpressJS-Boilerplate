@@ -3,6 +3,9 @@ var Schema = mongoose.Schema;
 
 // validation function
 var nameValidation = function(val) {
+	console.log("inside name validation");
+	console.log(val);
+	
 	if (val.length >= 5) {
 		return true;
 	} else {

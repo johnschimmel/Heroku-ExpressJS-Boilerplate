@@ -5,8 +5,6 @@
  * Routes contains the functions (callbacks) associated with request urls.
  */
 
-var _ = require("underscore");
-
 var moment = require("moment"); // date manipulation library
 var astronautModel = require("../models/astronaut.js"); //db model
 
@@ -145,12 +143,12 @@ exports.createAstro = function(req, res) {
 	newAstro.save(function(err){
 		if (err) {
 			console.error("Error on saving new astronaut");
-			console.error(err);
+			console.error(err); // log out to Terminal all errors
 
 			var templateData = {
 				page_title : 'Enlist a new astronaut',
-				errors : err.errors,
-				astro : _.extend({},req.body)
+				errors : err.errors, 
+				astro : req.body
 			};
 
 			res.render('create_form.html', templateData);
@@ -225,18 +223,17 @@ exports.updateAstro = function(req, res) {
 		
 	}
 
+
 	// query for astronaut
 	astronautModel.update({slug:astro_id}, { $set: updatedData}, function(err, astronaut){
 
 		if (err) {
-			console.error("ERROR");
-			console.error(err);
-			res.send("There was an error updating "+ astro_id).status(500);
+			console.error("ERROR: While updating");
+			console.error(err);			
 		}
 
 		if (astronaut != null) {
 			res.redirect('/astronauts/' + astro_id);
-
 
 		} else {
 
@@ -297,7 +294,49 @@ exports.postShipLog = function(req, res) {
 			return res.status(404).render('404.html');
 		}
 	})
+}
 
+exports.deleteAstro = function(req,res) {
+
+	// Get astronaut from URL params
+	var astro_id = req.params.astro_id;
+
+	// if querystring has confirm=yes, delete record
+	// else display the confirm page
+
+	if (req.query.confirm == 'yes')  {
+	
+		astronautModel.remove({slug:astro_id}, function(err){
+			if (err){ 
+				console.error(err);
+				res.send("Error when trying to remove astronaut: "+ astro_id);
+			}
+
+			res.send("Removed astronaut. <a href='/'>Back to home</a>.");
+		});
+
+	} else {
+		//query astronaut and display confirm page
+		astronautModel.findOne({slug:astro_id}, function(err, astronaut){
+
+			if (err) {
+				console.error("ERROR");
+				console.error(err);
+				res.send("There was an error querying for "+ astro_id).status(500);
+			}
+
+			if (astronaut != null) {
+
+				var templateData = {
+					astro : astronaut
+				};
+				
+				res.render('delete_confirm.html', templateData);
+			
+			}
+		})
+
+	}
 
 
 }
