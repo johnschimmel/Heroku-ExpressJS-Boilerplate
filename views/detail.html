@@ -4,10 +4,18 @@
 	<div class="span4">
 		<img src="{{astro.photo}}" alt="photo of astronaut {{astro.name}}" class="img-polaroid" width="320px"><br>
 		
-		source: 
-		<a href="{{astro.source.url}}" class="small">
-			{{astro.source.name}}
-		</a>
+		<p>
+			source: 
+			<a href="{{astro.source.url}}" class="small">
+				{{astro.source.name}}
+			</a>
+
+			<br>
+
+			json:
+			<a href="/data/astronauts/{{astro.slug}}">/data/astronauts/{{astro.slug}}</a>
+		</p>
+
 
 	</div>
 	

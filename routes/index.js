@@ -5,6 +5,8 @@
  * Routes contains the functions (callbacks) associated with request urls.
  */
 
+var request = require('request'); // library to make requests to remote urls
+
 var moment = require("moment"); // date manipulation library
 var astronautModel = require("../models/astronaut.js"); //db model
 
@@ -31,12 +33,31 @@ exports.index = function(req, res) {
 
 		console.log("retrieved " + allAstros.length + " astronauts from database");
 
+		//build and render template
 		var templateData = {
 			astros : allAstros,
 			pageTitle : "NASA Astronauts (" + allAstros.length + ")"
 		}
 
 		res.render('index.html', templateData);
+
+	});
+
+}
+
+exports.data_all = function(req, res) {
+
+	astroQuery = astronautModel.find({}); // query for all astronauts
+	astroQuery.sort('-birthdate');
+	astroQuery.exec(function(err, allAstros){
+		// prepare data for JSON
+		var jsonData = {
+			status : 'OK',
+			astros : allAstros
+			
+		}
+
+		res.json(jsonData);
 	});
 
 }
@@ -91,6 +112,46 @@ exports.detail = function(req, res) {
 
 		}) // end of .find (all) query
 		
+	}); // end of .findOne query
+
+}
+
+exports.data_detail = function(req, res) {
+
+	console.log("detail page requested for " + req.params.astro_id);
+
+	//get the requested astronaut by the param on the url :astro_id
+	var astro_id = req.params.astro_id;
+
+	// query the database for astronaut
+	var astroQuery = astronautModel.findOne({slug:astro_id});
+	astroQuery.exec(function(err, currentAstronaut){
+
+		if (err) {
+			return res.status(500).send("There was an error on the astronaut query");
+		}
+
+		if (currentAstronaut == null) {
+			return res.status(404).render('404.html');
+		}
+
+
+		// formattedBirthdate function for currentAstronaut
+		currentAstronaut.formattedBirthdate = function() {
+			// formatting a JS date with moment
+			// http://momentjs.com/docs/#/displaying/format/
+            return moment(this.birthdate).format("dddd, MMMM Do YYYY");
+        };
+		
+		//prepare JSON data for response
+		var jsonData = {
+			astro : currentAstronaut,
+			status : 'OK'
+		}
+
+		// return JSON to requestor
+		res.json(jsonData);
+
 	}); // end of .findOne query
 
 }
@@ -304,7 +365,7 @@ exports.deleteAstro = function(req,res) {
 	// if querystring has confirm=yes, delete record
 	// else display the confirm page
 
-	if (req.query.confirm == 'yes')  {
+	if (req.query.confirm == 'yes')  {  // ?confirm=yes
 	
 		astronautModel.remove({slug:astro_id}, function(err){
 			if (err){ 
@@ -337,6 +398,37 @@ exports.deleteAstro = function(req,res) {
 		})
 
 	}
+};
 
+exports.remote_api = function(req, res) {
 
-}
+	var remote_api_url = 'http://itpdwdexpresstemplates.herokuapp.com/data/astronauts';
+	// var remote_api_url = 'http://localhost:5000/data/astronauts';
+
+	// make a request to remote_api_url
+	request.get(remote_api_url, function(error, response, data){
+		
+		if (error){
+			res.send("There was an error requesting remote api url.");
+		}
+
+		// convert data JSON string to native JS object
+		var apiData = JSON.parse(data);
+
+		// if apiData has property 'status == OK' then successful api request
+		if (apiData.status == 'OK') {
+
+			// prepare template data for remote_api_demo.html template
+			var templateData = {
+				astronauts : apiData.astros,
+				rawJSON : data, 
+				remote_url : remote_api_url
+			}
+
+			return res.render('remote_api_demo.html', templateData);
+	
+		}
+		
+	})
+
+};

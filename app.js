@@ -8,6 +8,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 
+
 // the ExpressJS App
 var app = express();
 
@@ -78,6 +79,12 @@ app.get('/astronauts/:astro_id/delete', routes.deleteAstro);
 // add ship's log
 app.post('/astronauts/:astro_id/addshiplog', routes.postShipLog);
 
+// API JSON Data routes
+app.get('/data/astronauts',routes.data_all);
+app.get('/data/astronauts/:astro_id', routes.data_detail);
+
+// consume a remote API
+app.get('/remote_api_test', routes.remote_api);
 
 // create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){
