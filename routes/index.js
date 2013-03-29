@@ -49,6 +49,10 @@ exports.data_all = function(req, res) {
 
 	astroQuery = astronautModel.find({}); // query for all astronauts
 	astroQuery.sort('-birthdate');
+	
+	// display only 3 fields from astronaut data
+	astroQuery.select('name photo birthdate');
+	
 	astroQuery.exec(function(err, allAstros){
 		// prepare data for JSON
 		var jsonData = {
@@ -410,11 +414,18 @@ exports.remote_api = function(req, res) {
 		
 		if (error){
 			res.send("There was an error requesting remote api url.");
+			return;
 		}
 
+		// Step 2 - convert 'data' to JS
 		// convert data JSON string to native JS object
 		var apiData = JSON.parse(data);
 
+		console.log(apiData);
+		console.log("***********");
+
+
+		// STEP 3  - check status / respond
 		// if apiData has property 'status == OK' then successful api request
 		if (apiData.status == 'OK') {
 
@@ -426,9 +437,13 @@ exports.remote_api = function(req, res) {
 			}
 
 			return res.render('remote_api_demo.html', templateData);
-	
-		}
-		
+		}	
 	})
-
 };
+
+
+
+
+
+
+
