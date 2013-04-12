@@ -28,9 +28,18 @@ app.configure(function(){
   app.engine('html', require('hogan-express')); // https://github.com/vol4ok/hogan-express
 
   app.use(express.favicon());
-  // app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+
+  // pass a secret to cookieParser() for signed cookies
+  app.use(express.cookieParser('SECRET_COOKIE_HASH_HERE'));
+  app.use(express.cookieSession()); // add req.session cookie support
+  app.use(function(req, res, next){
+    res.locals.sessionUserName = req.session.userName;
+    res.locals.sessionUserColor = req.session.userColor;
+    next();
+  });
+
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 
@@ -43,6 +52,7 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+
 
 /* 
 SKIPPING FOR FUTURE CLASSES
@@ -85,6 +95,9 @@ app.get('/data/astronauts/:astro_id', routes.data_detail);
 
 // consume a remote API
 app.get('/remote_api_demo', routes.remote_api);
+
+
+app.post('/set_session', routes.set_session);
 
 // create NodeJS HTTP server using 'app'
 http.createServer(app).listen(app.get('port'), function(){

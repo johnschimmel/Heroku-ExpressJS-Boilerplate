@@ -441,7 +441,17 @@ exports.remote_api = function(req, res) {
 	})
 };
 
+exports.set_session = function(req, res) {
 
+	// set the session with the submitted form data
+	req.session.userName = req.body.name;
+	req.session.userColor = req.body.fav_color;
+
+	// redirect back to where they came from
+	console.log(req.referrer);
+	res.redirect('/');
+
+}
 
 
 

@@ -13,6 +13,16 @@
                 padding-top: 60px;
                 padding-bottom: 40px;
             }
+
+            {{#sessionUserColor}}
+            .navbar .navbar-inner { 
+                background-color: {{sessionUserColor}};
+                background-image: none;
+                background-repeat: no-repeat;
+                filter: none;
+            };
+            {{/sessionUserColor}}
+            
         </style>
         <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="/css/main.css">
@@ -22,6 +32,19 @@
     <body>
 
         <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+          <div class="navbar-inner">
+            <div class="container">
+              <a class="brand" href="#">Our Favorite Astronauts</a>
+                <form method="POST" action="/set_session" class="navbar-form pull-right">
+                  <input class="span2" name="name" type="text" value="{{#sessionUserName}}{{ sessionUserName }}{{/sessionUserName}}" placeholder="Name">
+                  <input class="span2" name="fav_color" type="color" value="{{sessionUserColor}}">
+                  <button type="submit" class="btn">Set Session</button>
+                </form>
+            </div>
+          </div>
+        </div>
+
 
         <div class="container">
 
