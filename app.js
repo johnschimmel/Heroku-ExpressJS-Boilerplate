@@ -34,6 +34,8 @@ app.configure(function(){
   // pass a secret to cookieParser() for signed cookies
   app.use(express.cookieParser('SECRET_COOKIE_HASH_HERE'));
   app.use(express.cookieSession()); // add req.session cookie support
+  
+  // make sesssion information available to all templates
   app.use(function(req, res, next){
     res.locals.sessionUserName = req.session.userName;
     res.locals.sessionUserColor = req.session.userColor;
